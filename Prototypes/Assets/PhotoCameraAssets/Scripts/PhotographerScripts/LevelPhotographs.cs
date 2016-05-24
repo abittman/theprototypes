@@ -25,9 +25,9 @@ public class LevelPhotographs : MonoBehaviour {
 		}
 	}
 
-	public void AddPhotograph(Texture2D photo, string name, float distance, float accuracy, int boundsIn)
+	public void AddPhotograph(Texture2D photo, Creature creature, float distance, float accuracy, int boundsIn)
 	{
-		Photograph newPhoto = new Photograph(photo, name, distance, accuracy, boundsIn);
+		Photograph newPhoto = new Photograph(photo, creature, distance, accuracy, boundsIn);
 		allTakenPhotographs.Add(newPhoto);
 	}
 

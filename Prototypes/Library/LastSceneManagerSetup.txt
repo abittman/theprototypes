@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/InfiniteRunnerRPG/Scenes/infiniterunnerRPG.unity
+- path: Assets/BondsOfStrength/simsbonds.unity
   isLoaded: 1
   isActive: 1

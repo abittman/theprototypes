@@ -110,12 +110,13 @@ public class PhotoCameraDetection : MonoBehaviour {
 
 		foreach(GameObject g in currentObjectsOnScreen)
 		{
+            Photo_CreatureScript creatureScript = g.GetComponent<PhotoCreature_Target>().parentCreatureScript;
 			//Creature name
-			string name = g.name;
+			string name = creatureScript.thisCreature.creatureName;
 			//Distance from camera
-			float distance = Vector3.Distance(g.transform.position, photoCamera.transform.position);
+			float distance = Vector3.Distance(creatureScript.gameObject.transform.position, photoCamera.transform.position);
 			//accuracy of shot
-			Vector3 pointOfIntersection = ray.origin + ray.direction * Vector3.Dot(ray.direction, g.transform.position - ray.origin);
+			Vector3 pointOfIntersection = ray.origin + ray.direction * Vector3.Dot(ray.direction, creatureScript.gameObject.transform.position - ray.origin);
 			Vector3 closestPoint = g.GetComponent<Collider>().ClosestPointOnBounds(pointOfIntersection);
 			float accuracy = Vector3.Distance(pointOfIntersection, closestPoint);
 
@@ -166,27 +167,29 @@ public class PhotoCameraDetection : MonoBehaviour {
 				boundsIn++;			
 			}
 			*/
-			Photo_CreatureScript thisCreature = g.GetComponent<Photo_CreatureScript>();
-			foreach(Transform t in thisCreature.focusPoints)
+			foreach(Transform t in creatureScript.focusPoints)
 			{
 				if(CameraCanSeePoint(t.position))
 				{
-					Debug.Log(t.gameObject.name + " is in shot.");
+					//Debug.Log(t.gameObject.name + " is in shot.");
 					if(Physics.Raycast(photoCamera.transform.position,
 										t.position - photoCamera.transform.position, out hit, 100f, myMask))
 					{
 						if(hit.collider.transform.gameObject == g)
 						{
-							Debug.Log(t.gameObject.name + "is not blocked.");
+							//Debug.Log(t.gameObject.name + "is not blocked.");
 							boundsIn++;
 						}
 					}
 				}
 			}
-			Debug.Log("Creature: " + name + ". Distance: " + distance.ToString() + ". Accuracy: " + accuracy.ToString() + ". Bound: " + boundsIn.ToString());
+
+            string poseName = creatureScript.GetCurrentPose().animationName;
+
+			Debug.Log("Creature: " + name + ". Distance: " + distance.ToString() + ". Accuracy: " + accuracy.ToString() + ". Bound: " + boundsIn.ToString() + ". Current Pose: " + poseName);
 			if(bestPhoto == null)
 			{
-				bestPhoto = new Photograph(null, name, distance, accuracy, boundsIn);
+				bestPhoto = new Photograph(null, creatureScript.thisCreature, distance, accuracy, boundsIn);
 			}
 			else
 			{

@@ -7,9 +7,10 @@ public class ShowPhoto : MonoBehaviour {
 	public GameObject canvasToEnable;
 	public RawImage imageObj;
 	public Text nameText;
-	public Text distText;
-	public Text accText;
-	public Text boundsText;
+    public Text scoreText;
+    //public Text distText;
+	//public Text accText;
+	//public Text boundsText;
 
 	public int currentPhotoNumber;
 
@@ -27,10 +28,11 @@ public class ShowPhoto : MonoBehaviour {
 	public void DisplayPhoto(Photograph photo)
 	{
 		imageObj.texture = photo.savedPhoto;
-		nameText.text = photo.subjectMatter;
-		distText.text = photo.distance.ToString();
+		nameText.text = photo.subjectMatter.creatureName;
+        scoreText.text = photo.GetScore().ToString();
+		/*distText.text = photo.distance.ToString();
 		accText.text = photo.focus.ToString();
-		boundsText.text = photo.boundsInShot.ToString();
+		boundsText.text = photo.boundsInShot.ToString();*/
 		canvasToEnable.SetActive(true);
 	}
 
