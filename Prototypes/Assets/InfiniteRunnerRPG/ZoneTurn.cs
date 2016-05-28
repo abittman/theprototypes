@@ -28,7 +28,7 @@ public class ZoneTurn : MonoBehaviour {
 	{
 		
 	}
-
+/*
 	void OnTriggerEnter(Collider col)
 	{
 		if(col.gameObject.tag == "Player")
@@ -76,4 +76,5 @@ public class ZoneTurn : MonoBehaviour {
 			}
 		}
 	}
+    */
 }

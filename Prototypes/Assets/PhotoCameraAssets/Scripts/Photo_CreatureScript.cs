@@ -14,15 +14,25 @@ public class PhotoCreaturePoses
 {
     //public Animation associatedAnimation;
     public string animationName;
+    public CreatureAIStates associatedAIState;
     public int bonusPoints;
 }
 
+public enum CreatureAIStates
+{
+    None,
+    Idle,
+    Walk_Path,
+    Walk_To_Object,
+    Pose
+}
 public class Photo_CreatureScript : MonoBehaviour {
 
     [Header("Creature Details + Scoring")]
     public Creature thisCreature;
 
     public List<PhotoCreaturePoses> creaturePoses = new List<PhotoCreaturePoses>();
+    public CreatureAIStates currentState;
     public Animator thisCreatureAnimator;
     public float transitionTime = 2f;
     float transitionTimer;
@@ -52,39 +62,55 @@ public class Photo_CreatureScript : MonoBehaviour {
 
             if (transitionForward)
             {
-                if (thisCreatureAnimator.GetBool("IsIdle"))
+                switch (currentState)
                 {
-                    thisCreatureAnimator.SetBool("IsIdle", false);
-                    thisCreatureAnimator.SetBool("IsWalking", true);
-                }
-                else if (thisCreatureAnimator.GetBool("IsWalking"))
-                {
-                    thisCreatureAnimator.SetBool("IsWalking", false);
-                    thisCreatureAnimator.SetBool("IsDancing", true);
-                }
-                else if (thisCreatureAnimator.GetBool("IsDancing"))
-                {
-                    thisCreatureAnimator.SetBool("IsDancing", false);
-                    thisCreatureAnimator.SetBool("IsIdle", true);
+                    case CreatureAIStates.Idle:
+                        currentState = CreatureAIStates.Walk_Path;
+                        break;
+                    case CreatureAIStates.Walk_Path:
+                        currentState = CreatureAIStates.Pose;
+                        break;
+                    case CreatureAIStates.Walk_To_Object:
+                        currentState = CreatureAIStates.Pose;
+                        break;
+                    case CreatureAIStates.Pose:
+                        currentState = CreatureAIStates.Idle;
+                        break;
                 }
             }
             else
             {
-                if (thisCreatureAnimator.GetBool("IsIdle"))
+                switch (currentState)
                 {
-                    thisCreatureAnimator.SetBool("IsIdle", false);
-                    thisCreatureAnimator.SetBool("IsWalking", true);
+                    case CreatureAIStates.Idle:
+                        currentState = CreatureAIStates.Walk_Path;
+                        break;
+                    case CreatureAIStates.Walk_Path:
+                        currentState = CreatureAIStates.Pose;
+                        break;
+                    case CreatureAIStates.Walk_To_Object:
+                        currentState = CreatureAIStates.Pose;
+                        break;
+                    case CreatureAIStates.Pose:
+                        currentState = CreatureAIStates.Idle;
+                        break;
                 }
-                else if (thisCreatureAnimator.GetBool("IsWalking"))
-                {
-                    thisCreatureAnimator.SetBool("IsWalking", false);
-                    thisCreatureAnimator.SetBool("IsIdle", true);
-                }
-                else if (thisCreatureAnimator.GetBool("IsDancing"))
-                {
-                    thisCreatureAnimator.SetBool("IsDancing", false);
-                    thisCreatureAnimator.SetBool("IsWalking", true);
-                }
+            }
+
+            switch (currentState)
+            {
+                case CreatureAIStates.Idle:
+                    thisCreatureAnimator.SetTrigger("IsIdle");
+                    break;
+                case CreatureAIStates.Walk_Path:
+                    thisCreatureAnimator.SetTrigger("IsWalking");
+                    break;
+                case CreatureAIStates.Walk_To_Object:
+                    thisCreatureAnimator.SetTrigger("IsWalking");
+                    break;
+                case CreatureAIStates.Pose:
+                    thisCreatureAnimator.SetTrigger("IsDancing");
+                    break;
             }
         }
 	}
