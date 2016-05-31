@@ -28,13 +28,13 @@ public class Photograph {
         int scoreTally = 0;
 
         //size
-        if(subjectMatter.distanceForScreenFill <= distance)
+        if(subjectMatter.distanceForScreenFill >= distance)
         {
             scoreTally += 500;
         }
         else
         {
-            scoreTally += 500 - (100 * (int)(subjectMatter.distanceForScreenFill - distance));
+            scoreTally += 500 - (10 * (int)(distance - subjectMatter.distanceForScreenFill));
         }
 
         //accuracy

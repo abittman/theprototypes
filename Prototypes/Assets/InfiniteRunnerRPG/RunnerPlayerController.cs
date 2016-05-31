@@ -77,10 +77,18 @@ public class RunnerPlayerController : MonoBehaviour {
 
 		//Using Bezier Splines
 		progress += Time.deltaTime * forwardMoveSpeed;
-		if(progress > 1f)
+		if(progress >= 1f)
 		{
-		//	progress = 1f;
-			transform.localPosition += Time.deltaTime * transform.TransformDirection(Vector3.forward);
+            //If there is a next lane
+            if (GetNextArea() != null)
+            {
+                MoveToNextArea();
+            }
+            else
+            {
+                //If there is no next lane
+                transform.localPosition += Time.deltaTime * transform.TransformDirection(Vector3.forward);
+            }
 		}
 		else
 		{
@@ -92,8 +100,57 @@ public class RunnerPlayerController : MonoBehaviour {
 		}
 	}
 
-	public void MoveToNextArea(RunningArea nextArea)
+    public RunningArea GetNextArea()
+    {
+        RunningArea nextArea = null;
+
+        if (!currentRunningArea.pathSplit)
+        {
+            nextArea = currentRunningArea.nextNonSplitArea;
+        }
+        else
+        {
+            switch (currentLane)
+            {
+                case LaneID.Left:
+                    if (currentRunningArea.nextLeftArea != null)
+                    {
+                        nextArea = currentRunningArea.nextLeftArea;
+                    }
+                    else
+                    {
+                        //Do nothing - continue forward
+                    }
+                    break;
+                case LaneID.Middle:
+                    if (currentRunningArea.nextMiddleArea != null)
+                    {
+                        nextArea = currentRunningArea.nextMiddleArea;
+                    }
+                    else
+                    {
+                        //Do nothing - continue forward
+                    }
+                    break;
+                case LaneID.Right:
+                    if (currentRunningArea.nextRightArea != null)
+                    {
+                        nextArea = currentRunningArea.nextRightArea;
+                    }
+                    else
+                    {
+                        //Do nothing - continue forward
+                    }
+                    break;
+            }
+        }
+
+        return nextArea;
+    }
+
+	public void MoveToNextArea()
 	{
+        RunningArea nextArea = GetNextArea();
 		currentRunningArea.LeftRunningArea();
 		currentRunningArea = nextArea;
 		currentRunningArea.InRunningArea(this);

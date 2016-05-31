@@ -12,8 +12,16 @@ public class RunningArea : MonoBehaviour {
 
 	public List<InteractiveLane> interactiveLanes = new List<InteractiveLane>();
 
-	// Use this for initialization
-	void Start () {
+    public bool pathSplit = false;
+
+    public RunningArea lastArea;
+    public RunningArea nextNonSplitArea;
+    public RunningArea nextLeftArea;
+    public RunningArea nextMiddleArea;
+    public RunningArea nextRightArea;
+
+    // Use this for initialization
+    void Start () {
 		InteractiveLane[] iLanes = gameObject.GetComponentsInChildren<InteractiveLane>();
 		interactiveLanes.AddRange(iLanes);
 	}

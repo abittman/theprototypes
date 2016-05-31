@@ -1,4 +1,8 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/PhotoCameraAssets/Scenes/CameraScene.unity
+=======
+- path: Assets/PhotoCameraAssets/Scenes/LevelSelectScreen.unity
+>>>>>>> 2d9a864423dae6b4d31260fe0a3e15f6fdc8dcf4
   isLoaded: 1
   isActive: 1
