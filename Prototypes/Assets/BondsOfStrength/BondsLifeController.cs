@@ -19,6 +19,7 @@ public class BondsLifeController : MonoBehaviour {
     {
 	    if(isSelected)
         {
+        	//Needs to have GUI take precedance.
             if(Input.GetMouseButtonDown(0))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
